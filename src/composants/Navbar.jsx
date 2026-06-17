@@ -35,6 +35,14 @@ const Navbar = () => {
           Mini <span className="text-orange-500 group-hover:text-orange-400 transition-colors">Stack Overflow</span>
         </span>
       </NavLink>
+            <div className="flex-1 mx-10">
+        <input
+          type="text"
+          placeholder="Rechercher une question..."
+          className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
       
       {/* Liens de navigation et Boutons */}
       <div className="flex items-center gap-8">
