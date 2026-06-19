@@ -1,192 +1,142 @@
-import React from 'react'
-import { User, Mail, MessageCircle, HelpCircle } from "lucide-react"
+import React, {useEffect, useState} from "react";
+
 
 const Profil = () => {
 
-  return (
 
-    <div className="
-      min-h-screen 
-      bg-gradient-to-br 
-      from-blue-100 
-      to-slate-100 
-      flex 
-      justify-center 
-      items-center 
-      p-6
-    ">
+const [profil,setProfil] = useState(null);
 
 
-      <div className="
-        bg-white 
-        w-full 
-        max-w-3xl 
-        rounded-3xl 
-        shadow-xl 
-        p-8
-      ">
+useEffect(()=>{
 
 
-        {/* Profil header */}
+const getProfil = async()=>{
 
-        <div className="flex items-center gap-5 mb-8">
 
+try{
 
-          <div className="
-            w-24 
-            h-24 
-            bg-blue-600 
-            rounded-full 
-            flex 
-            items-center 
-            justify-center 
-            text-white
-          ">
+const response = await fetch(
+"http://localhost:3000/api/users/profil/ID_USER"
+);
 
-            <User size={45}/>
 
-          </div>
+const data = await response.json();
 
+setProfil(data);
 
 
-          <div>
+}catch(error){
 
-            <h1 className="
-              text-3xl 
-              font-bold 
-              text-gray-800
-            ">
-              Nogaye Niang
-            </h1>
+console.log(error);
 
-
-            <div className="flex items-center gap-2 text-gray-500">
-
-              <Mail size={18}/>
-
-              nogaye@email.com
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-
-
-        {/* Statistiques */}
-
-        <div className="
-          grid 
-          grid-cols-2 
-          gap-5 
-          mb-8
-        ">
-
-
-          <div className="
-            bg-blue-50 
-            rounded-2xl 
-            p-5 
-            text-center
-          ">
-
-            <HelpCircle 
-              className="mx-auto text-blue-600"
-            />
-
-            
-
-            <p className="text-gray-500">
-              Questions posées
-            </p>
-
-
-          </div>
-
-
-
-
-
-          <div className="
-            bg-green-50 
-            rounded-2xl 
-            p-5 
-            text-center
-          ">
-
-
-            <MessageCircle 
-              className="mx-auto text-green-600"
-            />
-
-
-            
-
-
-            <p className="text-gray-500">
-              Réponses données
-            </p>
-
-
-          </div>
-
-
-        </div>
-
-
-
-
-
-        {/* Questions */}
-
-        <div>
-
-
-          <h2 className="
-            text-xl 
-            font-bold 
-            mb-4
-          ">
-            Mes questions
-          </h2>
-
-
-
-          <div className="
-            border 
-            rounded-xl 
-            p-4 
-            hover:bg-gray-50
-          ">
-
-
-            <h3 className="font-semibold">
-              Comment connecter React avec Node.js ?
-            </h3>
-
-
-            <p className="text-gray-500">
-              #react #node
-            </p>
-
-
-          </div>
-
-
-
-        </div>
-
-
-      </div>
-
-
-    </div>
-
-  )
 }
 
-export default Profil
+
+};
+
+
+getProfil();
+
+
+},[]);
+
+
+
+if(!profil){
+
+return <h1 className="text-center mt-10">
+Chargement...
+</h1>
+
+}
+
+
+
+
+return (
+
+<div className="min-h-screen bg-gray-100 flex justify-center items-center p-5">
+
+
+<div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
+
+
+<div className="flex flex-col items-center">
+
+
+<div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold">
+
+{profil.user.nom.charAt(0)}
+
+</div>
+
+
+<h1 className="text-2xl font-bold mt-4">
+
+{profil.user.nom}
+
+</h1>
+
+
+<p className="text-gray-500">
+
+{profil.user.email}
+
+</p>
+
+
+</div>
+
+
+
+<div className="grid grid-cols-2 gap-4 mt-8">
+
+
+<div className="bg-blue-100 p-4 rounded-xl text-center">
+
+<h2 className="text-3xl font-bold text-blue-600">
+
+{profil.questions}
+
+</h2>
+
+<p>
+Questions
+</p>
+
+</div>
+
+
+
+<div className="bg-green-100 p-4 rounded-xl text-center">
+
+
+<h2 className="text-3xl font-bold text-green-600">
+
+{profil.reponses}
+
+</h2>
+
+
+<p>
+Réponses
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+)
+
+}
+
+
+export default Profil;
