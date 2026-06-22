@@ -31,7 +31,7 @@ const App = () => {
                 //  route de detail message
                {path:'/question/:id' , element:<Detail/>},
               // {path:'/messages' , element:<Message/>},
-               {path:'/reponse:id' , element:<Reponse/>},
+               {path:'/reponse/:id' , element:<Reponse/>},
               
 
 
