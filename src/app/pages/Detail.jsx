@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const Detail = () => {
-  const { id: questionId } = useParams(); // ✅ simplifié
+  const { id: questionId } = useParams();
 
   const [showForm, setShowForm] = useState(false);
   const [reponse, setReponse] = useState("");
@@ -15,6 +15,11 @@ const Detail = () => {
       try {
         setError(null);
 
+        // Si l'id est "undefined", inutile de lancer le fetch
+        if (!questionId || questionId === "undefined") {
+          return;
+        }
+
         const res = await fetch(
           `http://localhost:3000/api/reponses/${questionId}`
         );
@@ -25,10 +30,7 @@ const Detail = () => {
         }
 
         const data = await res.json();
-
-        const liste = Array.isArray(data)
-          ? data
-          : data.reponses || data.data || [];
+        const liste = Array.isArray(data) ? data : data.reponses || data.data || [];
 
         setReponses(liste);
       } catch (error) {
@@ -44,6 +46,12 @@ const Detail = () => {
   const ajouterReponse = async () => {
     if (!reponse.trim()) return;
 
+    // 🛡️ SÉCURITÉ : Bloque l'envoi si l'ID est invalide
+    if (!questionId || questionId === "undefined") {
+      setError("Action impossible : L'identifiant de la question est introuvable (undefined).");
+      return;
+    }
+
     try {
       setError(null);
 
@@ -54,7 +62,7 @@ const Detail = () => {
         },
         body: JSON.stringify({
           contenu: reponse.trim(),
-          questionId: questionId, // 🔥 CORRECTION ICI
+          questionId: questionId,
         }),
       });
 
@@ -79,14 +87,12 @@ const Detail = () => {
       <div className="bg-white rounded-xl shadow p-8">
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-200">
             {error}
           </div>
         )}
 
-        <h1 className="text-2xl font-bold">
-          Question détaillée
-        </h1>
+        <h1 className="text-2xl font-bold">Question détaillée</h1>
 
         {/* Réponses */}
         <h2 className="text-xl font-bold mt-6">
@@ -94,10 +100,10 @@ const Detail = () => {
         </h2>
 
         {reponses.length === 0 ? (
-          <p>Aucune réponse</p>
+          <p className="text-gray-500 mt-2">Aucune réponse</p>
         ) : (
           reponses.map((rep) => (
-            <div key={rep._id} className="p-3 bg-gray-100 mt-2 rounded">
+            <div key={rep._id || Math.random()} className="p-3 bg-gray-100 mt-2 rounded">
               {rep.contenu}
             </div>
           ))
@@ -106,7 +112,7 @@ const Detail = () => {
         {/* Bouton */}
         <button
           onClick={() => setShowForm(!showForm)}
-          className="mt-5 bg-blue-600 text-white px-4 py-2 rounded"
+          className="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors"
         >
           {showForm ? "Annuler" : "Répondre"}
         </button>
@@ -117,13 +123,14 @@ const Detail = () => {
             <textarea
               value={reponse}
               onChange={(e) => setReponse(e.target.value)}
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Écrire une réponse..."
+              rows="4"
             />
 
             <button
               onClick={ajouterReponse}
-              className="mt-2 bg-green-600 text-white px-4 py-2 rounded"
+              className="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors"
             >
               Envoyer
             </button>
