@@ -17,6 +17,7 @@ const ajouterReponse = () => {
   const nouvelleListe = [...reponses, reponse];
 
   setReponses(nouvelleListe);
+  console.log(nouvelleListe);
 
   setReponse("");
 
