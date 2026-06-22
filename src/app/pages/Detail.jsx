@@ -1,29 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const Detail = () => {
+
+  const { id } = useParams();
+  const questionId = id;
 
   const [showForm, setShowForm] = useState(false);
   const [reponse, setReponse] = useState("");
   const [reponses, setReponses] = useState([]);
 
+  // ✅ Charger les réponses depuis MongoDB
+  useEffect(() => {
 
-  const ajouterReponse = () => {
+    const chargerReponses = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/reponses/${questionId}`
+        );
 
-    if (!reponse.trim()) {
-      return;
+        const data = await res.json();
+
+        setReponses(data);
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    chargerReponses();
+
+  }, [questionId]);
+
+
+  // ✅ Ajouter une réponse vers MongoDB
+  const ajouterReponse = async () => {
+
+    if (!reponse.trim()) return;
+
+    try {
+
+      const res = await fetch("http://localhost:3000/api/reponses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contenu: reponse,
+          question: questionId,
+        }),
+      });
+
+      const data = await res.json();
+
+      // ⚠️ version safe React
+      setReponses((prev) => [...prev, data]);
+
+      setReponse("");
+      setShowForm(false);
+
+    } catch (error) {
+      console.log(error);
     }
-
-
-    setReponses((ancienneReponses) => [
-      ...ancienneReponses,
-      reponse
-    ]);
-
-
-    setReponse("");
-
-    setShowForm(false);
-
   };
 
 
@@ -31,150 +69,77 @@ const Detail = () => {
 
     <div className="min-h-screen bg-gray-100 p-10">
 
-
       <div className="bg-white rounded-xl shadow p-8">
-
 
         <h1 className="text-3xl font-bold">
           Comment utiliser useEffect dans React pour récupérer des données ?
         </h1>
 
-
         <p className="mt-4 text-gray-600">
           Je débute avec React et je souhaite récupérer des données depuis une API avec useEffect.
         </p>
 
-
-
         <div className="mt-6 border-b pb-4">
-
           👤 Aminata Ndiaye
-
-          <span className="float-right">
-            ⏰ 09:15
-          </span>
-
+          <span className="float-right">⏰ 09:15</span>
         </div>
 
-
-
-
-        {/* Nombre de réponses */}
-
-        <h2 
-          key={reponses.length}
-          className="text-xl font-bold mt-6"
-        >
-
+        {/* Réponses */}
+        <h2 className="text-xl font-bold mt-6">
           Réponses ({reponses.length})
-
         </h2>
-
-
-
-
-        {/* Affichage des réponses */}
 
         {
           reponses.length === 0 ? (
-
             <p className="text-gray-500 mt-3">
               Aucune réponse pour le moment...
             </p>
-
-
           ) : (
-
-
-            reponses.map((rep,index)=>(
-
+            reponses.map((rep, index) => (
               <div
                 key={index}
                 className="bg-gray-100 p-4 rounded mt-3"
               >
-
-                {rep}
-
+                {rep.contenu}
               </div>
-
-
             ))
-
           )
         }
-
-
-
-
 
         {/* Bouton répondre */}
-
         <button
-
-          onClick={()=>setShowForm(!showForm)}
-
+          onClick={() => setShowForm(!showForm)}
           className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg"
-
         >
-
           Répondre
-
         </button>
 
-
-
-
-
         {/* Formulaire */}
-
         {
           showForm && (
-
             <div className="mt-5">
 
-
               <textarea
-
                 value={reponse}
-
-                onChange={(e)=>setReponse(e.target.value)}
-
+                onChange={(e) => setReponse(e.target.value)}
                 placeholder="Écrire votre réponse..."
-
                 className="w-full border rounded-lg p-3 h-32"
-
               />
 
-
-
               <button
-
                 onClick={ajouterReponse}
-
                 className="mt-3 bg-green-600 text-white px-5 py-2 rounded-lg"
-
               >
-
                 Envoyer
-
               </button>
 
-
-
             </div>
-
           )
         }
 
-
-
       </div>
-
-
     </div>
-
-  )
-}
-
+  );
+};
 
 export default Detail;
