@@ -6,12 +6,17 @@ const Detail = () => {
   const [reponse, setReponse] = useState("");
   const [reponses, setReponses] = useState([]);
 
+
   const ajouterReponse = () => {
+
     if (reponse.trim() === "") return;
 
     setReponses([...reponses, reponse]);
+
     setReponse("");
+
     setShowForm(false);
+
   };
 
 
@@ -20,9 +25,11 @@ const Detail = () => {
 
       <div className="bg-white rounded-xl shadow p-8">
 
+
         <h1 className="text-3xl font-bold">
           Comment utiliser useEffect dans React pour récupérer des données ?
         </h1>
+
 
         <p className="mt-4 text-gray-600">
           Je débute avec React et je souhaite récupérer des données depuis une API avec useEffect.
@@ -37,10 +44,37 @@ const Detail = () => {
         </div>
 
 
-        
+
+        <h2 className="text-xl font-bold mt-6">
+          Réponses ({reponses.length})
+        </h2>
 
 
-        {/* Bouton répondre */}
+        {
+          reponses.length === 0 ? (
+
+            <p className="text-gray-500 mt-3">
+              Aucune réponse pour le moment...
+            </p>
+
+          ) : (
+
+            reponses.map((rep,index)=>(
+
+              <div 
+                key={index}
+                className="bg-gray-100 p-4 rounded mt-3"
+              >
+                {rep}
+              </div>
+
+            ))
+
+          )
+        }
+
+
+
         <button
           onClick={()=>setShowForm(!showForm)}
           className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg"
@@ -48,29 +82,8 @@ const Detail = () => {
           Répondre
         </button>
 
-        <h2 className="text-xl font-bold mt-6">
-  Réponses ({reponses.length})
-</h2>
 
 
-{
-  reponses.length === 0 ? (
-    <p className="text-gray-500 mt-3">
-      Aucune réponse pour le moment...
-    </p>
-  ) : (
-    reponses.map((rep,index)=>(
-      <div 
-        key={index}
-        className="bg-gray-100 p-4 rounded mt-3"
-      >
-        {rep}
-      </div>
-    ))
-  )
-}
-
-        {/* Formulaire */}
         {
           showForm && (
 
@@ -90,6 +103,7 @@ const Detail = () => {
               >
                 Envoyer
               </button>
+
 
             </div>
 
