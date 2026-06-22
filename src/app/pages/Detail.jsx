@@ -37,27 +37,7 @@ const Detail = () => {
         </div>
 
 
-        <h2 className="text-xl font-bold mt-6">
-          Réponses
-        </h2>
-
-
-        {
-          reponses.length === 0 ? (
-            <p className="text-gray-500 mt-3">
-              Aucune réponse pour le moment...
-            </p>
-          ) : (
-            reponses.map((rep,index)=>(
-              <div 
-                key={index}
-                className="bg-gray-100 p-4 rounded mt-3"
-              >
-                {rep}
-              </div>
-            ))
-          )
-        }
+        
 
 
         {/* Bouton répondre */}
@@ -68,7 +48,27 @@ const Detail = () => {
           Répondre
         </button>
 
+        <h2 className="text-xl font-bold mt-6">
+  Réponses ({reponses.length})
+</h2>
 
+
+{
+  reponses.length === 0 ? (
+    <p className="text-gray-500 mt-3">
+      Aucune réponse pour le moment...
+    </p>
+  ) : (
+    reponses.map((rep,index)=>(
+      <div 
+        key={index}
+        className="bg-gray-100 p-4 rounded mt-3"
+      >
+        {rep}
+      </div>
+    ))
+  )
+}
 
         {/* Formulaire */}
         {
