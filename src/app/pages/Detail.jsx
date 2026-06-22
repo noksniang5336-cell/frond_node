@@ -21,7 +21,12 @@ const Detail = () => {
 
         const data = await res.json();
 
-        setReponses(data);
+        // 🔥 sécurité : on force un tableau quoi qu'il arrive
+        const liste = Array.isArray(data)
+          ? data
+          : data.reponses || data.data || data.result || [];
+
+        setReponses(liste);
 
       } catch (error) {
         console.log(error);
@@ -53,7 +58,7 @@ const Detail = () => {
 
       const data = await res.json();
 
-      // ⚠️ version safe React
+      // 🔥 ajout safe
       setReponses((prev) => [...prev, data]);
 
       setReponse("");
@@ -71,6 +76,7 @@ const Detail = () => {
 
       <div className="bg-white rounded-xl shadow p-8">
 
+        {/* Question (statique pour l’instant) */}
         <h1 className="text-3xl font-bold">
           Comment utiliser useEffect dans React pour récupérer des données ?
         </h1>
@@ -95,9 +101,9 @@ const Detail = () => {
               Aucune réponse pour le moment...
             </p>
           ) : (
-            reponses.map((rep, index) => (
+            reponses.map((rep) => (
               <div
-                key={index}
+                key={rep._id || Math.random()}
                 className="bg-gray-100 p-4 rounded mt-3"
               >
                 {rep.contenu}
