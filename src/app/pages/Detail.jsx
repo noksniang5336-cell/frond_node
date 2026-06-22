@@ -1,93 +1,106 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-
-const questions = [
-  {
-    id: 1,
-    titre: "Comment utiliser useEffect dans React pour récupérer des données ?",
-    description:
-      "Je débute avec React et je souhaite récupérer des données depuis une API avec useEffect.",
-    heure: "09:15",
-    auteur: "Aminata Ndiaye",
-  },
-  {
-    id: 2,
-    titre: "Pourquoi mon serveur Express retourne une erreur 404 ?",
-    description:
-      "J'ai créé une route GET /users mais lorsque je fais une requête depuis Postman, je reçois une erreur 404.",
-    heure: "10:30",
-    auteur: "Mamadou Diallo",
-  },
-  {
-    id: 3,
-    titre: "Comment connecter Spring Boot à une base de données MySQL ?",
-    description:
-      "Mon application Spring Boot ne parvient pas à se connecter à MySQL.",
-    heure: "11:45",
-    auteur: "Fatou Sow",
-  },
-];
-
+import React, { useState } from "react";
 
 const Detail = () => {
 
-  const { id } = useParams();
+  const [showForm, setShowForm] = useState(false);
+  const [reponse, setReponse] = useState("");
+  const [reponses, setReponses] = useState([]);
 
-  const question = questions.find(
-    (q) => q.id === Number(id)
-  );
+  const ajouterReponse = () => {
+    if (reponse.trim() === "") return;
 
-
-  if (!question) {
-    return <h1>Question introuvable</h1>;
-  }
+    setReponses([...reponses, reponse]);
+    setReponse("");
+    setShowForm(false);
+  };
 
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
 
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-8">
+      <div className="bg-white rounded-xl shadow p-8">
 
-        <h1 className="text-3xl font-bold mb-4">
-          {question.titre}
+        <h1 className="text-3xl font-bold">
+          Comment utiliser useEffect dans React pour récupérer des données ?
         </h1>
 
-        <p className="text-gray-600 mb-6">
-          {question.description}
+        <p className="mt-4 text-gray-600">
+          Je débute avec React et je souhaite récupérer des données depuis une API avec useEffect.
         </p>
 
 
-        <div className="flex justify-between text-sm text-gray-500">
-
-          <span>
-            👤 {question.auteur}
+        <div className="mt-6 border-b pb-4">
+          👤 Aminata Ndiaye
+          <span className="float-right">
+            ⏰ 09:15
           </span>
-
-          <span>
-            ⏰ {question.heure}
-          </span>
-
         </div>
 
 
-        <div className="mt-8 border-t pt-5">
+        <h2 className="text-xl font-bold mt-6">
+          Réponses
+        </h2>
 
-          <h2 className="text-xl font-semibold">
-            Réponses
-          </h2>
 
-          <p className="text-gray-500 mt-3">
-            Aucune réponse pour le moment...
-          </p>
+        {
+          reponses.length === 0 ? (
+            <p className="text-gray-500 mt-3">
+              Aucune réponse pour le moment...
+            </p>
+          ) : (
+            reponses.map((rep,index)=>(
+              <div 
+                key={index}
+                className="bg-gray-100 p-4 rounded mt-3"
+              >
+                {rep}
+              </div>
+            ))
+          )
+        }
 
-        </div>
+
+        {/* Bouton répondre */}
+        <button
+          onClick={()=>setShowForm(!showForm)}
+          className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg"
+        >
+          Répondre
+        </button>
+
+
+
+        {/* Formulaire */}
+        {
+          showForm && (
+
+            <div className="mt-5">
+
+              <textarea
+                value={reponse}
+                onChange={(e)=>setReponse(e.target.value)}
+                placeholder="Écrire votre réponse..."
+                className="w-full border rounded-lg p-3 h-32"
+              />
+
+
+              <button
+                onClick={ajouterReponse}
+                className="mt-3 bg-green-600 text-white px-5 py-2 rounded-lg"
+              >
+                Envoyer
+              </button>
+
+            </div>
+
+          )
+        }
 
 
       </div>
 
     </div>
-  );
-};
-
+  )
+}
 
 export default Detail;
