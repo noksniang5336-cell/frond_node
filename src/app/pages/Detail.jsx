@@ -24,7 +24,7 @@ const ajouterReponse = () => {
   setShowForm(false);
 
 };
-
+console.log("Nombre de réponses :", reponses.length);
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
@@ -51,34 +51,22 @@ const ajouterReponse = () => {
 
 
 
-        <h2 className="text-xl font-bold mt-6">
-          Réponses ({reponses.length})
-        </h2>
+       <h2 className="text-xl font-bold mt-6">
+  Réponses ({reponses.length})
+</h2>
 
-
-        {
-          reponses.length === 0 ? (
-
-            <p className="text-gray-500 mt-3">
-              Aucune réponse pour le moment...
-            </p>
-
-          ) : (
-
-            reponses.map((rep,index)=>(
-
-              <div 
-                key={index}
-                className="bg-gray-100 p-4 rounded mt-3"
-              >
-                {rep}
-              </div>
-
-            ))
-
-          )
-        }
-
+<div>
+{
+  reponses.map((rep, index) => (
+    <div 
+      key={index}
+      className="bg-gray-100 p-4 rounded mt-3"
+    >
+      {rep}
+    </div>
+  ))
+}
+</div>
 
 
         <button
