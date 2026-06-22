@@ -7,27 +7,30 @@ const Detail = () => {
   const [reponses, setReponses] = useState([]);
 
 
-const ajouterReponse = () => {
+  const ajouterReponse = () => {
 
-  if (!reponse.trim()) {
-    return;
-  }
+    if (!reponse.trim()) {
+      return;
+    }
 
 
-  const nouvelleListe = [...reponses, reponse];
+    setReponses((ancienneReponses) => [
+      ...ancienneReponses,
+      reponse
+    ]);
 
-  setReponses(nouvelleListe);
-  console.log(nouvelleListe);
 
-  setReponse("");
+    setReponse("");
 
-  setShowForm(false);
+    setShowForm(false);
 
-};
-console.log("Nombre de réponses :", reponses.length);
+  };
+
 
   return (
+
     <div className="min-h-screen bg-gray-100 p-10">
+
 
       <div className="bg-white rounded-xl shadow p-8">
 
@@ -42,61 +45,120 @@ console.log("Nombre de réponses :", reponses.length);
         </p>
 
 
+
         <div className="mt-6 border-b pb-4">
+
           👤 Aminata Ndiaye
+
           <span className="float-right">
             ⏰ 09:15
           </span>
+
         </div>
 
 
 
-       <h2 className="text-xl font-bold mt-6">
-  Réponses ({reponses.length})
-</h2>
 
-<div>
-{
-  reponses.map((rep, index) => (
-    <div 
-      key={index}
-      className="bg-gray-100 p-4 rounded mt-3"
-    >
-      {rep}
-    </div>
-  ))
-}
-</div>
+        {/* Nombre de réponses */}
 
+        <h2 
+          key={reponses.length}
+          className="text-xl font-bold mt-6"
+        >
+
+          Réponses ({reponses.length})
+
+        </h2>
+
+
+
+
+        {/* Affichage des réponses */}
+
+        {
+          reponses.length === 0 ? (
+
+            <p className="text-gray-500 mt-3">
+              Aucune réponse pour le moment...
+            </p>
+
+
+          ) : (
+
+
+            reponses.map((rep,index)=>(
+
+              <div
+                key={index}
+                className="bg-gray-100 p-4 rounded mt-3"
+              >
+
+                {rep}
+
+              </div>
+
+
+            ))
+
+          )
+        }
+
+
+
+
+
+        {/* Bouton répondre */}
 
         <button
+
           onClick={()=>setShowForm(!showForm)}
+
           className="mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg"
+
         >
+
           Répondre
+
         </button>
 
 
+
+
+
+        {/* Formulaire */}
 
         {
           showForm && (
 
             <div className="mt-5">
 
+
               <textarea
+
                 value={reponse}
+
                 onChange={(e)=>setReponse(e.target.value)}
+
                 placeholder="Écrire votre réponse..."
+
                 className="w-full border rounded-lg p-3 h-32"
+
               />
 
 
+
               <button
+
                 onClick={ajouterReponse}
+
                 className="mt-3 bg-green-600 text-white px-5 py-2 rounded-lg"
+
               >
+
                 Envoyer
+
               </button>
+
 
 
             </div>
@@ -105,10 +167,14 @@ console.log("Nombre de réponses :", reponses.length);
         }
 
 
+
       </div>
 
+
     </div>
+
   )
 }
+
 
 export default Detail;
