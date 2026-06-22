@@ -7,17 +7,22 @@ const Detail = () => {
   const [reponses, setReponses] = useState([]);
 
 
-  const ajouterReponse = () => {
+const ajouterReponse = () => {
 
-    if (reponse.trim() === "") return;
+  if (!reponse.trim()) {
+    return;
+  }
 
-    setReponses([...reponses, reponse]);
 
-    setReponse("");
+  const nouvelleListe = [...reponses, reponse];
 
-    setShowForm(false);
+  setReponses(nouvelleListe);
 
-  };
+  setReponse("");
+
+  setShowForm(false);
+
+};
 
 
   return (
