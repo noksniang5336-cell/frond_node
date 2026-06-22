@@ -45,6 +45,8 @@ const Questions = () => {
     },
   ];
 
+  
+
   return (
     <div className="w-full min-h-screen bg-[#f8fafc] text-slate-700 px-4 py-12 sm:px-8">
       <div className="max-w-3xl mx-auto">
