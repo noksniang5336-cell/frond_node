@@ -19,10 +19,61 @@ const QuestionForm = () => {
   }
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(question)
+  const handleSubmit = async (e) => {
+
+  e.preventDefault();
+
+
+  const data = {
+    titre: question.titre,
+    description: question.description,
+    tags: question.tags
+      .split(",")
+      .map(tag => tag.trim())
+      .filter(tag => tag !== "")
+  };
+
+
+  console.log("Envoi :", data);
+
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:5000/api/questions",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(data)
+      }
+    );
+
+
+    const result = await response.json();
+
+
+    console.log("Backend :", result);
+
+
+    // vider le formulaire
+    setQuestion({
+      titre:"",
+      description:"",
+      tags:""
+    });
+
+
+  } catch(error){
+
+    console.log("Erreur :", error);
+
   }
+
+}
 
 
   return (
