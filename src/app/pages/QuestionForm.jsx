@@ -40,7 +40,7 @@ const QuestionForm = () => {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/api/questions",
+      "http://localhost:3000/api/questions",
       {
         method:"POST",
 
