@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
 import { Send, Tag, FileText, HelpCircle } from "lucide-react"
 
-
 const QuestionForm = () => {
-
   const [question, setQuestion] = useState({
     titre: "",
     description: "",
     tags: ""
   })
-
 
   const handleChange = (e) => {
     setQuestion({
@@ -18,204 +15,138 @@ const QuestionForm = () => {
     })
   }
 
-
   const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  e.preventDefault();
+    const data = {
+      titre: question.titre,
+      description: question.description,
+      tags: question.tags
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(tag => tag !== "")
+    };
 
+    console.log("Envoi :", data);
 
-  const data = {
-    titre: question.titre,
-    description: question.description,
-    tags: question.tags
-      .split(",")
-      .map(tag => tag.trim())
-      .filter(tag => tag !== "")
-  };
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/questions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
 
+      const result = await response.json();
+      console.log("Backend :", result);
 
-  console.log("Envoi :", data);
+      // vider le formulaire
+      setQuestion({
+        titre: "",
+        description: "",
+        tags: ""
+      });
 
-
-  try {
-
-    const response = await fetch(
-      "http://localhost:3000/api/questions",
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify(data)
-      }
-    );
-
-
-    const result = await response.json();
-
-
-    console.log("Backend :", result);
-
-
-    // vider le formulaire
-    setQuestion({
-      titre:"",
-      description:"",
-      tags:""
-    });
-
-
-  } catch(error){
-
-    console.log("Erreur :", error);
-
+    } catch (error) {
+      console.log("Erreur :", error);
+    }
   }
 
-}
-
-
   return (
-
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-100 flex items-center justify-center p-6">
+    <div className="min-h-[92vh] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-50/40 via-slate-50 to-slate-100/70 flex items-center justify-center p-4 md:p-8 text-slate-800 antialiased">
       
+      {/* Conteneur effet "Verre" Premium */}
+      <div className="bg-white/80 w-full max-w-2xl rounded-3xl shadow-xl shadow-slate-200/50 p-6 md:p-10 border border-white/80 backdrop-blur-xl">
 
-      <div className="bg-white w-full max-w-2xl rounded-3xl shadow-xl p-8">
-
-
-    
-
-        <div className="mb-8">
-
-          <div className="flex items-center gap-3">
-
-            <div className="bg-blue-600 text-white p-3 rounded-xl">
-              <HelpCircle size={30}/>
-            </div>
-
-
-            <div>
-
-              <h1 className="text-3xl font-bold text-gray-800">
-                Poser une question
-              </h1>
-
-              <p className="text-gray-500">
-                Partage ton problème avec la communauté
-              </p>
-
-            </div>
-
+        {/* En-tête du formulaire */}
+        <div className="mb-8 flex items-center gap-4">
+          <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-3 rounded-2xl shadow-md shadow-orange-500/20 shrink-0">
+            <HelpCircle size={28} />
           </div>
-
+          <div>
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-slate-900">
+              Poser une <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-500">question</span>
+            </h1>
+            <p className="text-sm text-slate-500 font-medium mt-0.5">
+              Formulez votre problème clairement pour obtenir de l'aide rapidement.
+            </p>
+          </div>
         </div>
 
-
-
+        {/* Formulaire */}
         <form onSubmit={handleSubmit} className="space-y-6">
 
-
-    
-
-          <div>
-
-            <label className="flex items-center gap-2 font-semibold text-gray-700 mb-2">
-
-              <FileText size={18}/>
-              Titre
-
+          {/* Champ Titre */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 tracking-wide">
+              <FileText size={16} className="text-slate-400" />
+              Titre de la question
             </label>
-
-
             <input
-
               type="text"
-
               name="titre"
-
               value={question.titre}
               onChange={handleChange}
-              placeholder="Ex: Comment utiliser React Router ?"
-              className="w-full border
-              border-gray-300
-              rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500 transition "/>
-
+              placeholder="Ex: Comment propager un événement dans un Portal React ?"
+              className="w-full bg-white/60 border border-slate-200 focus:border-orange-500/50 rounded-xl p-4 text-sm outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-200 placeholder-slate-400 font-medium shadow-inner"
+            />
           </div>
 
-
-
-
-
-         
-
-          <div>
-
-
-            <label className="font-semibold text-gray-700 mb-2 block">
-
-              Description
-
+          {/* Champ Description */}
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 tracking-wide block">
+              Description détaillée
             </label>
-
-
             <textarea
-
               name="description"
               value={question.description}
               onChange={handleChange}
-              placeholder="Explique ton problème en détail..."
+              placeholder="Introduisez votre contexte, collez vos erreurs et ce que vous avez déjà tenté..."
               rows="6"
-              className=" w-full border border-gray-300 rounded-xl p-4 resize-none outline-none focus:ring-2 focus:ring-blue-500 transition"/>
-
+              className="w-full bg-white/60 border border-slate-200 focus:border-orange-500/50 rounded-xl p-4 text-sm resize-none outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-200 placeholder-slate-400 font-medium shadow-inner leading-relaxed"
+            />
           </div>
 
-          <div>
-
-            <label className="flex items-center gap-2 font-semibold text-gray-700 mb-2">
-
-              <Tag size={18}/>
-              Tags
-
+          {/* Champ Tags */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-bold text-slate-700 tracking-wide">
+              <Tag size={16} className="text-slate-400" />
+              Tags associés
             </label>
-
             <input
-
               type="text"
               name="tags"
               value={question.tags}
               onChange={handleChange}
-              placeholder="react, node, mongodb"
-              className="w-full border border-gray-300 rounded-xl p-4 outline-none focus:ring-2  focus:ring-blue-500 transition"/>
-
-            <p className="text-sm text-gray-400 mt-2">
-              Exemple : #react #javascript
+              placeholder="Ex: react, javascript, routing"
+              className="w-full bg-white/60 border border-slate-200 focus:border-orange-500/50 rounded-xl p-4 text-sm outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-200 placeholder-slate-400 font-medium shadow-inner"
+            />
+            <p className="text-xs text-slate-400 font-medium pl-1">
+              Séparez vos mots-clés par une virgule (ex: <span className="text-orange-600/70">react, node</span>)
             </p>
-
           </div>
 
-
+          {/* Bouton de Soumission */}
           <button
-
             type="submit"
-
-            className="w-full
-            bg-blue-600 hover:bg-blue-700 text-white  font-semibold py-4 rounded-xl flex items-center justify-center  gap-2  transition shadow-lg ">
-
-          <Send size={20}/>
+            className="w-full relative group overflow-hidden bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all duration-300 border border-orange-500/10 tracking-wide"
+          >
+            {/* Effet lumineux linéaire */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+            
+            <Send size={16} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             Publier la question
-
           </button>
-        
+          
         </form>
 
       </div>
-
     </div>
-
-
   )
 }
 
-
-export default QuestionForm
+export default QuestionForm;
