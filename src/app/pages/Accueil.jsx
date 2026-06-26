@@ -15,23 +15,23 @@ const Accueil = () => {
   };
 
   return (
-    <div className="min-h-[92vh] bg-slate-950 text-slate-100 selection:bg-orange-500/30">
+    <div className="min-h-[92vh] bg-slate-50/50 text-slate-800 antialiased selection:bg-orange-100">
       
-      {/* SECTION EN-TÊTE DE LA PAGE */}
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-10 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      {/* HEADER DE LA PAGE */}
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 pt-12 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
         <div>
-          <h2 className="text-xl md:text-2xl font-black tracking-tight text-slate-200">
-            Toutes les <span className="text-orange-500">Questions</span>
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
+            Toutes les <span className="text-orange-600">Questions</span>
           </h2>
-          <p className="text-xs md:text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 mt-1 font-medium">
             Explorez les interrogations de la communauté ou partagez vos connaissances.
           </p>
         </div>
 
-        {/* Bouton d'action "Ajouter une question" super stylisé */}
+        {/* Bouton "Poser une question" Thème Clair Premium */}
         <button
           onClick={VerificationToken}
-          className="self-start sm:self-center bg-orange-600 hover:bg-orange-500 text-white text-xs md:text-sm font-bold px-5 py-3 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-500/20 active:scale-95 transition-all duration-250 border border-orange-500/30 flex items-center gap-2 tracking-wide group"
+          className="self-start sm:self-center bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold px-5 py-3 rounded-xl shadow-lg shadow-orange-600/10 hover:shadow-orange-600/20 active:scale-98 transition-all duration-200 flex items-center gap-2 group border border-orange-700/10"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -46,15 +46,10 @@ const Accueil = () => {
         </button>
       </div>
 
-      {/* SÉPARATEUR VISUEL SUBTIL */}
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-12">
-        <div className="h-[1px] w-full bg-slate-900"></div>
-      </div>
-
-      {/* ZONE PRINCIPALE (CONTENU DES QUESTIONS) */}
-      <main className="w-full max-w-6xl mx-auto px-4 md:px-10 py-6">
-        {/* Vos cartes de questions hériteront de ce magnifique cadre immersif */}
-        <div className="bg-slate-900/40 rounded-2xl border border-slate-900/60 p-2 md:p-6 backdrop-blur-sm">
+      {/* ZONE PRINCIPALE (LISTE DES QUESTIONS) */}
+      <main className="w-full max-w-6xl mx-auto px-4 md:px-12 py-4">
+        {/* Un conteneur blanc épuré avec une ombre très douce */}
+        <div className="bg-white rounded-2xl border border-slate-200/60 p-4 md:p-8 shadow-sm shadow-slate-100 backdrop-blur-md">
           <Questions />
         </div>
       </main>
