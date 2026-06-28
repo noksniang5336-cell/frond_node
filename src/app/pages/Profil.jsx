@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode"; // On importe le décodeur de token
 
 const Profil = () => {
   const [profil, setProfil] = useState(null);
@@ -13,23 +14,29 @@ const Profil = () => {
         setLoading(true);
         setError(null);
 
-        // 1. Récupération de l'utilisateur depuis le localStorage
-        // IMPORTANT : Assurez-vous d'avoir fait localStorage.setItem("user", JSON.stringify(donneesUser)) lors du Login
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        const token = localStorage.getItem("token"); // Récupération du token pour l'API
-        
-        const userId = storedUser?.id || storedUser?._id; 
+        // 1. Récupération du token uniquement
+        const token = localStorage.getItem("token"); 
 
-        if (!userId) {
+        if (!token) {
           throw new Error("Aucun utilisateur connecté trouvé.");
         }
 
-        // 2. Appel API avec la BONNE variable (userId) et passage du Token en Authorization Header
+        // 2. Décodage du token pour extraire l'ID de l'utilisateur
+        const decodedToken = jwtDecode(token);
+        
+        // On gère les différents formats d'ID possibles selon ton backend (id ou _id)
+        const userId = decodedToken.id || decodedToken._id || decodedToken.userId; 
+
+        if (!userId) {
+          throw new Error("Impossible de récupérer l'ID depuis le token.");
+        }
+
+        // 3. Appel à ton serveur API
         const response = await fetch(`http://localhost:3000/api/auth/profil/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": token ? `Bearer ${token}` : "" // Optionnel mais fortement recommandé
+            "Authorization": `Bearer ${token}`
           },
           signal: controller.signal
         });
@@ -55,6 +62,7 @@ const Profil = () => {
     return () => controller.abort();
   }, []);
 
+  // Écran de chargement
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -65,6 +73,7 @@ const Profil = () => {
     );
   }
 
+  // Écran d'erreur (si le token est absent ou le serveur éteint)
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -81,6 +90,7 @@ const Profil = () => {
     );
   }
 
+  // Si l'API renvoie des données vides
   if (!profil || !profil.user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -89,10 +99,12 @@ const Profil = () => {
     );
   }
 
+  // Affichage final du profil réactif avec Tailwind CSS
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-5">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
         <div className="flex flex-col items-center">
+          {/* Bulle de l'avatar avec la première lettre du nom */}
           <div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold uppercase">
             {profil.user.nom ? profil.user.nom.charAt(0) : "?"}
           </div>
@@ -106,6 +118,7 @@ const Profil = () => {
           </p>
         </div>
 
+        {/* Statistiques Mini Stack Overflow */}
         <div className="grid grid-cols-2 gap-4 mt-8">
           <div className="bg-blue-100 p-4 rounded-xl text-center">
             <h2 className="text-3xl font-bold text-blue-600">
