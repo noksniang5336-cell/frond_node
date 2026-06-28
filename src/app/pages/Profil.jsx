@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // On importe le décodeur de token
+import { jwtDecode } from "jwt-decode"; 
 
 const Profil = () => {
   const [profil, setProfil] = useState(null);
@@ -14,7 +14,7 @@ const Profil = () => {
         setLoading(true);
         setError(null);
 
-        // 1. Récupération du token uniquement
+        // 1. Récupération du token depuis le localStorage
         const token = localStorage.getItem("token"); 
 
         if (!token) {
@@ -23,15 +23,13 @@ const Profil = () => {
 
         // 2. Décodage du token pour extraire l'ID de l'utilisateur
         const decodedToken = jwtDecode(token);
-        
-        // On gère les différents formats d'ID possibles selon ton backend (id ou _id)
         const userId = decodedToken.id || decodedToken._id || decodedToken.userId; 
 
         if (!userId) {
           throw new Error("Impossible de récupérer l'ID depuis le token.");
         }
 
-        // 3. Appel à ton serveur API
+        // 3. Appel à l'API Backend sur le port 3000
         const response = await fetch(`http://localhost:3000/api/auth/profil/${userId}`, {
           method: "GET",
           headers: {
@@ -59,6 +57,7 @@ const Profil = () => {
 
     getProfil();
 
+    // Nettoyage si le composant est démonté avant la fin de la requête
     return () => controller.abort();
   }, []);
 
@@ -73,7 +72,7 @@ const Profil = () => {
     );
   }
 
-  // Écran d'erreur (si le token est absent ou le serveur éteint)
+  // Écran d'erreur (Si le serveur sur le port 3000 ne répond pas)
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -90,7 +89,6 @@ const Profil = () => {
     );
   }
 
-  // Si l'API renvoie des données vides
   if (!profil || !profil.user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -99,17 +97,15 @@ const Profil = () => {
     );
   }
 
-  // Affichage final du profil réactif avec Tailwind CSS
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-5">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
         <div className="flex flex-col items-center">
-          {/* Bulle de l'avatar avec la première lettre du nom */}
-          <div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold uppercase">
+          <div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold uppercase shadow-inner">
             {profil.user.nom ? profil.user.nom.charAt(0) : "?"}
           </div>
 
-          <h1 className="text-2xl font-bold mt-4">
+          <h1 className="text-2xl font-bold mt-4 text-gray-800">
             {profil.user.nom}
           </h1>
 
@@ -118,20 +114,19 @@ const Profil = () => {
           </p>
         </div>
 
-        {/* Statistiques Mini Stack Overflow */}
         <div className="grid grid-cols-2 gap-4 mt-8">
-          <div className="bg-blue-100 p-4 rounded-xl text-center">
+          <div className="bg-blue-50 p-4 rounded-xl text-center border border-blue-100">
             <h2 className="text-3xl font-bold text-blue-600">
               {profil.questions || 0}
             </h2>
-            <p className="text-gray-700 text-sm font-medium">Questions</p>
+            <p className="text-gray-600 text-sm font-medium mt-1">Questions</p>
           </div>
 
-          <div className="bg-green-100 p-4 rounded-xl text-center">
+          <div className="bg-green-50 p-4 rounded-xl text-center border border-green-100">
             <h2 className="text-3xl font-bold text-green-600">
               {profil.reponses || 0}
             </h2>
-            <p className="text-gray-700 text-sm font-medium">Réponses</p>
+            <p className="text-gray-600 text-sm font-medium mt-1">Réponses</p>
           </div>
         </div>
       </div>
