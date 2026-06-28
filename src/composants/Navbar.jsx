@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, Link } from 'react-router-dom'
 import { Sun, Bell, ChevronDown, Search } from 'lucide-react'
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("token"));
   
-  // Simulation des données utilisateur (À remplacer par vos données réelles du localStorage ou d'un Context)
+  // Simulation des données utilisateur
   const [user, setUser] = useState({
     nom: "Nogaye Niang",
-    avatar: "" // Laissez vide pour utiliser les initiales par défaut si pas d'image
+    avatar: "" 
   });
 
   useEffect(() => {
@@ -25,7 +25,9 @@ const Navbar = () => {
     };
   }, []);
 
-  const Deconnexion = () => {
+  const Deconnexion = (e) => {
+    // Empêche le clic sur déconnexion de déclencher la navigation vers le profil
+    e.stopPropagation(); 
     localStorage.removeItem("token");
     setToken(null);
     window.dispatchEvent(new Event('authChange'));
@@ -68,10 +70,9 @@ const Navbar = () => {
       {/* 3. MENU DE NAVIGATION ET PROFIL */}
       <div className="flex items-center gap-5 shrink-0">
         
-        {/* Liens de pages */}
+        {/* Liens de pages - Seul l'accueil est conservé */}
         <div className="flex items-center gap-5 mr-1">
           <NavLink to="/" className={linkStyle}>Accueil</NavLink>
-          <NavLink to="/profil" className={linkStyle}>Profil</NavLink>
         </div>
 
         {/* Boutons d'outils (Soleil & Cloche) */}
@@ -87,7 +88,11 @@ const Navbar = () => {
 
         {/* Espace Utilisateur (Connecté vs Déconnecté) */}
         {token ? (
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-900 relative group cursor-pointer py-1">
+          /* Transformation du conteneur en Link vers la page profil */
+          <Link 
+            to="/profil" 
+            className="flex items-center gap-2 pl-2 border-l border-slate-900 relative group cursor-pointer py-1 no-underline select-none"
+          >
             {/* Avatar circulaire */}
             {user.avatar ? (
               <img src={user.avatar} alt={user.nom} className="h-7 w-7 rounded-full object-cover border border-slate-800" />
@@ -106,7 +111,7 @@ const Navbar = () => {
             </div>
 
             {/* Menu Déroulant au survol pour se déconnecter proprement */}
-            <div className="absolute right-0 top-full mt-2 w-40 bg-[#111625] border border-slate-900 rounded-xl shadow-2xl p-1.5 hidden group-hover:block animate-in fade-in slide-in-from-top-1 duration-150">
+            <div className="absolute right-0 top-full mt-2 w-40 bg-[#111625] border border-slate-900 rounded-xl shadow-2xl p-1.5 hidden group-hover:block animate-in fade-in slide-in-from-top-1 duration-150 z-50">
               <button
                 onClick={Deconnexion}
                 className="w-full text-left text-xs font-semibold text-slate-400 hover:text-red-400 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-all"
@@ -114,7 +119,7 @@ const Navbar = () => {
                 Se déconnecter
               </button>
             </div>
-          </div>
+          </Link>
         ) : (
           <div className="flex items-center gap-3 pl-2">
             <NavLink
