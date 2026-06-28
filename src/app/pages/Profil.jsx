@@ -22,7 +22,7 @@ const Profil = () => {
         }
 
         // 2. Appel API avec l'ID réel
-        const response = await fetch(`http://localhost:3000/api/auth/profil/${userId}`, {
+        const response = await fetch(`http://localhost:3000/api/auth/profil/${user._id}`, {
           signal: controller.signal
         });
 
