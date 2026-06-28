@@ -10,6 +10,9 @@ const Accueil = () => {
     <div className="min-h-[92vh] bg-[#090d16] text-slate-300 flex justify-center p-4 md:p-8 font-sans">
       {/* Conteneur principal bridé en largeur pour éviter l'effet étiré */}
       <div className="w-full max-w-5xl space-y-6">
+        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold bg-orange-500/10 text-orange-500 text-left">
+              <Compass size={16} /> Toutes les questions
+            </button>
         
         {/* EN-TÊTE DE PAGE SIMPLE */}
         <div className="flex items-center justify-between border-b border-slate-900 pb-5">
