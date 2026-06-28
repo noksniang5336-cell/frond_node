@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-// Exemple : Supposons que l'ID vienne d'un vrai contexte plus tard
-const userId = "12345"; 
-
 const Profil = () => {
   const [profil, setProfil] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +13,7 @@ const Profil = () => {
         setLoading(true);
         setError(null);
 
-        // 1. Récupérer l'utilisateur stocké (ajustez la clé 'user' selon votre projet)
+        // 1. Récupération dynamique depuis le localStorage
         const storedUser = JSON.parse(localStorage.getItem("user"));
         const userId = storedUser?.id || storedUser?._id; 
 
@@ -24,7 +21,7 @@ const Profil = () => {
           throw new Error("Aucun utilisateur connecté trouvé.");
         }
 
-        // 2. Faire l'appel avec le VRAI ID
+        // 2. Appel API avec l'ID réel
         const response = await fetch(`http://localhost:3000/api/users/profil/${userId}`, {
           signal: controller.signal
         });
@@ -38,7 +35,7 @@ const Profil = () => {
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Erreur lors de la récupération du profil:", err);
-          setError("Impossible de charger le profil. Veuillez réessayer.");
+          setError(err.message || "Impossible de charger le profil.");
         }
       } finally {
         setLoading(false);
@@ -47,11 +44,9 @@ const Profil = () => {
 
     getProfil();
 
-    // Fonction de nettoyage (cleanup)
     return () => controller.abort();
   }, []);
 
-  // 1. Gestion du chargement
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -62,7 +57,6 @@ const Profil = () => {
     );
   }
 
-  // 2. Gestion de l'erreur
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -79,7 +73,6 @@ const Profil = () => {
     );
   }
 
-  // 3. Sécurité au cas où les données de l'utilisateur sont manquantes
   if (!profil || !profil.user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -88,12 +81,10 @@ const Profil = () => {
     );
   }
 
-  // 4. Rendu de l'interface (Inchangé mais sécurisé)
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center p-5">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg p-8">
         <div className="flex flex-col items-center">
-          {/* Initial du nom avec fallback au cas où le nom est vide */}
           <div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold uppercase">
             {profil.user.nom ? profil.user.nom.charAt(0) : "?"}
           </div>
