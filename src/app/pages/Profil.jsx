@@ -13,16 +13,24 @@ const Profil = () => {
         setLoading(true);
         setError(null);
 
-        // 1. Récupération dynamique depuis le localStorage
+        // 1. Récupération de l'utilisateur depuis le localStorage
+        // IMPORTANT : Assurez-vous d'avoir fait localStorage.setItem("user", JSON.stringify(donneesUser)) lors du Login
         const storedUser = JSON.parse(localStorage.getItem("user"));
+        const token = localStorage.getItem("token"); // Récupération du token pour l'API
+        
         const userId = storedUser?.id || storedUser?._id; 
 
         if (!userId) {
           throw new Error("Aucun utilisateur connecté trouvé.");
         }
 
-        // 2. Appel API avec l'ID réel
-        const response = await fetch(`http://localhost:3000/api/auth/profil/${user._id}`, {
+        // 2. Appel API avec la BONNE variable (userId) et passage du Token en Authorization Header
+        const response = await fetch(`http://localhost:3000/api/auth/profil/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token ? `Bearer ${token}` : "" // Optionnel mais fortement recommandé
+          },
           signal: controller.signal
         });
 
