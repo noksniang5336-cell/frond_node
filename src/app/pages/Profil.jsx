@@ -9,7 +9,6 @@ const Profil = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // AbortController permet d'annuler la requête si le composant est démonté
     const controller = new AbortController();
 
     const getProfil = async () => {
@@ -17,7 +16,15 @@ const Profil = () => {
         setLoading(true);
         setError(null);
 
-        // Remplacement de ID_USER par une variable dynamique via template literal ``
+        // 1. Récupérer l'utilisateur stocké (ajustez la clé 'user' selon votre projet)
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const userId = storedUser?.id || storedUser?._id; 
+
+        if (!userId) {
+          throw new Error("Aucun utilisateur connecté trouvé.");
+        }
+
+        // 2. Faire l'appel avec le VRAI ID
         const response = await fetch(`http://localhost:3000/api/users/profil/${userId}`, {
           signal: controller.signal
         });
