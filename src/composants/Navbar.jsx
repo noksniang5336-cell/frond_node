@@ -12,21 +12,18 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-yellow-300 border-4 border-black p-4 flex justify-between items-center m-4 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <nav className="sticky top-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-md border-b border-[#1F1F1F] px-8 py-3 flex justify-between items-center">
       
-      {/* Logo Brutaliste */}
-      <Link 
-        to="/" 
-        className="text-2xl font-black uppercase tracking-wider text-black border-2 border-black bg-white px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-      >
-        MonApp
+      {/* Logo Cyber */}
+      <Link to="/" className="text-lg font-bold tracking-wider text-white hover:opacity-80 transition-opacity">
+        MON<span className="text-zinc-500">APP</span>
       </Link>
 
-      {/* Liens et Boutons */}
-      <div className="flex items-center gap-6">
+      {/* Liens de navigation */}
+      <div className="flex items-center gap-8">
         <Link 
           to="/" 
-          className="text-sm font-black uppercase text-black hover:underline underline-offset-4 decoration-4"
+          className="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200"
         >
           Accueil
         </Link>
@@ -35,13 +32,13 @@ const Navbar = () => {
           <>
             <Link 
               to="/profil" 
-              className="text-sm font-black uppercase text-black hover:underline underline-offset-4 decoration-4"
+              className="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200"
             >
               Mon Profil
             </Link>
             <button 
               onClick={handleLogout} 
-              className="text-sm font-black uppercase text-white bg-red-500 border-2 border-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+              className="text-sm font-medium text-red-400 hover:text-red-300 bg-red-950/30 border border-red-900/50 hover:border-red-700 px-4 py-1.5 rounded-md transition-all duration-200"
             >
               Déconnexion
             </button>
@@ -50,15 +47,15 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <Link 
               to="/connexion" 
-              className="text-sm font-black uppercase text-black border-2 border-black bg-white px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="text-sm font-medium text-zinc-400 hover:text-white px-3 py-1.5 transition-colors duration-200"
             >
               Connexion
             </Link>
             <Link 
               to="/inscription" 
-              className="text-sm font-black uppercase text-black border-2 border-black bg-emerald-400 px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+              className="text-sm font-medium text-black bg-white hover:bg-zinc-200 px-4 py-1.5 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-200"
             >
-              Inscription
+              S'inscrire
             </Link>
           </div>
         )}
