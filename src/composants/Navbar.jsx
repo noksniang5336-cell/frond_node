@@ -12,52 +12,57 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-white border-b border-gray-100 px-8 py-3.5 flex justify-between items-center tracking-tight">
+    <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-200/80 px-6 h-16 flex justify-between items-center">
       
-      {/* Logo sobre et intemporel */}
-      <Link to="/" className="text-lg font-medium text-black hover:opacity-70 transition-opacity">
-        MonApp
-      </Link>
-
-      {/* Liens et Actions */}
+      {/* Brand / Logo - Sobre et intemporel */}
       <div className="flex items-center gap-8">
-        <Link 
-          to="/" 
-          className="text-sm text-gray-500 hover:text-black transition-colors duration-150"
-        >
-          Accueil
+        <Link to="/" className="text-lg font-bold tracking-tight text-gray-950 hover:opacity-80 transition-opacity">
+          MonApp
         </Link>
         
-        {isLoggedIn ? (
-          <>
+        {/* Navigation Principale (Visible tout le temps) */}
+        <div className="hidden md:flex items-center gap-1">
+          <Link 
+            to="/" 
+            className="text-[14px] font-medium text-gray-600 hover:text-gray-950 px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors"
+          >
+            Accueil
+          </Link>
+          {isLoggedIn && (
             <Link 
               to="/profil" 
-              className="text-sm text-gray-500 hover:text-black transition-colors duration-150"
+              className="text-[14px] font-medium text-gray-600 hover:text-gray-950 px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors"
             >
               Mon Profil
             </Link>
-            <button 
-              onClick={handleLogout} 
-              className="text-sm text-red-600 hover:underline underline-offset-4 transition-all"
-            >
-              Déconnexion
-            </button>
-          </>
+          )}
+        </div>
+      </div>
+
+      {/* Actions / Authentification */}
+      <div className="flex items-center gap-3">
+        {isLoggedIn ? (
+          <button 
+            onClick={handleLogout} 
+            className="text-[14px] font-medium text-gray-600 hover:text-red-600 border border-gray-200 hover:border-red-200 px-3.5 py-1.5 rounded-md hover:bg-red-50/50 transition-all"
+          >
+            Déconnexion
+          </button>
         ) : (
-          <div className="flex items-center gap-5">
+          <>
             <Link 
               to="/connexion" 
-              className="text-sm text-gray-600 hover:text-black transition-colors duration-150"
+              className="text-[14px] font-medium text-gray-600 hover:text-gray-950 px-3.5 py-1.5 transition-colors"
             >
               Connexion
             </Link>
             <Link 
               to="/inscription" 
-              className="text-sm font-medium text-white bg-black hover:bg-gray-900 px-3.5 py-1.5 rounded transition-colors duration-150"
+              className="text-[14px] font-medium text-white bg-gray-900 hover:bg-gray-800 px-3.5 py-1.5 rounded-md shadow-sm transition-colors"
             >
-              S'inscrire
+              Créer un compte
             </Link>
-          </div>
+          </>
         )}
       </div>
     </nav>
