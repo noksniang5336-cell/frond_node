@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode"; 
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Profil = () => {
   const [profil, setProfil] = useState(null);
