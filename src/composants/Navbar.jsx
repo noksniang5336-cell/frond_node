@@ -24,10 +24,10 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-3 group">
             {/* Le carré violet avec le O blanc à la place du M */}
             <div className="w-10 h-10 bg-[#5046e5] rounded-xl flex items-center justify-center font-black text-white text-xl tracking-tighter shadow-sm shadow-indigo-200">
-              O
+              M
             </div>
             <span className="text-xl font-bold tracking-tight text-gray-900">
-              MonApp
+             Mini Stack Overflow
             </span>
           </Link>
           
