@@ -9,7 +9,7 @@ const Questions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/questions");
+        const response = await fetch("http://localhost:3000/api/questions");
         const data = await response.json();
         setQuestions(data);
       } catch (error) {
