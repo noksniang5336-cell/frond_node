@@ -12,19 +12,21 @@ const Navbar = () => {
   };
 
   return (
-    // Effet Glassmorphism : arrière-plan semi-transparent avec flou (backdrop-blur)
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center transition-all">
+    <nav className="bg-yellow-300 border-4 border-black p-4 flex justify-between items-center m-4 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       
-      {/* Logo avec un dégradé de couleur moderne */}
-      <Link to="/" className="text-2xl font-black tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent hover:opacity-90 transition">
-        MonApp<span className="text-indigo-600">.</span>
+      {/* Logo Brutaliste */}
+      <Link 
+        to="/" 
+        className="text-2xl font-black uppercase tracking-wider text-black border-2 border-black bg-white px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+      >
+        MonApp
       </Link>
 
-      {/* Liens de navigation */}
+      {/* Liens et Boutons */}
       <div className="flex items-center gap-6">
         <Link 
           to="/" 
-          className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200"
+          className="text-sm font-black uppercase text-black hover:underline underline-offset-4 decoration-4"
         >
           Accueil
         </Link>
@@ -33,30 +35,30 @@ const Navbar = () => {
           <>
             <Link 
               to="/profil" 
-              className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200"
+              className="text-sm font-black uppercase text-black hover:underline underline-offset-4 decoration-4"
             >
               Mon Profil
             </Link>
             <button 
               onClick={handleLogout} 
-              className="text-sm font-medium text-red-500 hover:text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl transition-all duration-200"
+              className="text-sm font-black uppercase text-white bg-red-500 border-2 border-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
             >
               Déconnexion
             </button>
           </>
         ) : (
-          <div className="flex items-center gap-3 border-l border-gray-200 pl-6">
+          <div className="flex items-center gap-4">
             <Link 
               to="/connexion" 
-              className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-4 py-2 rounded-xl hover:bg-gray-50 transition-all duration-200"
+              className="text-sm font-black uppercase text-black border-2 border-black bg-white px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               Connexion
             </Link>
             <Link 
               to="/inscription" 
-              className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-xl shadow-sm hover:shadow-indigo-100 hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+              className="text-sm font-black uppercase text-black border-2 border-black bg-emerald-400 px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
             >
-              S'inscrire
+              Inscription
             </Link>
           </div>
         )}
