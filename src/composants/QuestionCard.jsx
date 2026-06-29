@@ -1,14 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, Trash2 } from "lucide-react"; // Import de l'icône de suppression
 
-const QuestionCard = ({ question }) => {
+const QuestionCard = ({ question, onDelete }) => {
   const navigate = useNavigate();
   const [votes, setVotes] = useState(question.votes ?? 0);
 
   const handleVote = (e, info) => {
     e.stopPropagation(); // Empêche d'ouvrir la question au clic sur le vote
     setVotes(votes + info);
+  };
+
+  const handleDelete = async (e) => {
+    e.stopPropagation(); // Évite de déclencher le onClick de la carte entière (redirection)
+    
+    if (window.confirm("Voulez-vous vraiment supprimer cette question ?")) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/questions/${question._id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          if (onDelete) onDelete(question._id); // Notifie le composant parent
+        } else {
+          alert("Erreur lors de la suppression de la question.");
+        }
+      } catch (error) {
+        console.error("Erreur réseau :", error);
+        alert("Impossible de joindre le serveur.");
+      }
+    }
   };
 
   return (
@@ -59,10 +80,21 @@ const QuestionCard = ({ question }) => {
         )}
       </div>
 
-      {/* DROITE : AUTEUR */}
-      <div className="text-right shrink-0 text-[11px] text-slate-500 hidden sm:block">
-        <div className="font-semibold text-slate-300">{question.auteur ?? "Anonyme"}</div>
-        <div>il y a 2h</div>
+      {/* DROITE : AUTEUR & ACTION DE SUPPRESSION */}
+      <div className="flex items-center gap-4 shrink-0 hidden sm:flex">
+        <div className="text-right text-[11px] text-slate-500">
+          <div className="font-semibold text-slate-300">{question.auteur ?? "Anonyme"}</div>
+          <div>il y a 2h</div>
+        </div>
+
+        {/* Bouton Supprimer en icône */}
+        <button 
+          onClick={handleDelete}
+          className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+          title="Supprimer la question"
+        >
+          <Trash2 size={16} />
+        </button>
       </div>
 
     </div>
