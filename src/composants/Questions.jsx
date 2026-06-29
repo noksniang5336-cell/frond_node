@@ -6,22 +6,27 @@ const Questions = () => {
   const [loading, setLoading] = useState(true);
 
   // 1. Chargement initial des questions depuis votre API
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/questions");
-        const data = await response.json();
-        setQuestions(data);
-      } catch (error) {
-        console.error("Erreur lors du chargement des questions :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/questions");
+      const data = await response.json();
+      
+      // OPTION A: Si ton API renvoie { questions: [...] }
+      setQuestions(data.questions || []); 
+      
+      // OPTION B: Si ton API renvoie { data: [...] }
+      // setQuestions(data.data || []);
 
-    fetchQuestions();
-  }, []);
+    } catch (error) {
+      console.error("Erreur lors du chargement des questions :", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  fetchQuestions();
+}, []);
   // 2. La fonction magique : met à jour le state local pour faire disparaître la carte
   const handleQuestionDeleted = (idSupprime) => {
     setQuestions((prevQuestions) =>
