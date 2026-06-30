@@ -1,73 +1,177 @@
 import React, { useState, useEffect } from "react";
-import QuestionCard from "./QuestionCard"; // Ajustez le chemin d'accès si nécessaire
+import QuestionCard from "./QuestionCard";
 
 const Questions = () => {
+
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. Chargement initial des questions depuis votre API
- useEffect(() => {
-  const fetchQuestions = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/questions");
-      const data = await response.json();
-      
-      // OPTION A: Si ton API renvoie { questions: [...] }
-      setQuestions(data.questions || []); 
-      
-      // OPTION B: Si ton API renvoie { data: [...] }
-      // setQuestions(data.data || []);
 
-    } catch (error) {
-      console.error("Erreur lors du chargement des questions :", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Charger les questions depuis le backend
+  useEffect(() => {
 
-  fetchQuestions();
-}, []);
-  // 2. La fonction magique : met à jour le state local pour faire disparaître la carte
+    const fetchQuestions = async () => {
+
+      try {
+
+        const response = await fetch(
+          "http://localhost:3000/api/questions"
+        );
+
+
+        if (!response.ok) {
+          throw new Error("Erreur API");
+        }
+
+
+        const data = await response.json();
+
+
+        console.log("Questions reçues :", data);
+
+
+        // Si backend renvoie directement un tableau
+        setQuestions(data);
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur chargement questions :",
+          error
+        );
+
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+
+    fetchQuestions();
+
+
+  }, []);
+
+
+
+  // Supprimer une question de l'affichage après suppression
   const handleQuestionDeleted = (idSupprime) => {
-    setQuestions((prevQuestions) =>
-      prevQuestions.filter((q) => q._id !== idSupprime)
+
+    setQuestions((ancienneListe) =>
+      ancienneListe.filter(
+        (question) =>
+          question._id !== idSupprime
+      )
     );
+
   };
+
+
 
   if (loading) {
-    return <div className="text-center text-xs text-slate-500 py-4">Chargement des questions...</div>;
+
+    return (
+      <div className="text-center py-10 text-slate-400">
+        Chargement des questions...
+      </div>
+    );
+
   }
 
+
+
   return (
-    <div className="space-y-3">
-      {/* Compteur en direct basé sur la taille du state */}
-      <div className="flex justify-between items-center text-xs text-slate-500 mb-2">
-        <span className="flex items-center gap-1.5">
+
+    <div className="space-y-5">
+
+
+      {/* Header compteur */}
+
+      <div className="flex justify-between items-center">
+
+        <div className="flex items-center gap-2 text-xs text-emerald-400">
+
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+
           FLUX EN DIRECT
+
+        </div>
+
+
+        <span className="text-xs text-slate-400">
+
+          {questions.length} question
+          {questions.length > 1 ? "s" : ""}
+
         </span>
-        <span>
-          {questions.length} question{questions.length > 1 ? "s" : ""}
-        </span>
+
+
       </div>
 
-      {/* Rendu conditionnel si aucune question */}
-      {questions.length === 0 ? (
-        <div className="text-center py-10 text-slate-500 text-sm border border-dashed border-slate-900 rounded-xl">
-          Aucune question pour le moment.
-        </div>
-      ) : (
-        // 3. Injection des données et transmission de la prop onDelete
-        questions.map((item) => (
-          <QuestionCard
-            key={item._id}
-            question={item}
-            onDelete={handleQuestionDeleted} // 👈 Lié directement au bouton Trash2
-          />
-        ))
-      )}
+
+
+      {/* Affichage des questions */}
+
+      {
+
+        questions.length === 0 ?
+
+
+        (
+
+          <div className="
+            text-center
+            py-12
+            border
+            border-dashed
+            border-slate-800
+            rounded-xl
+            text-slate-500
+          ">
+
+            Aucune question pour le moment.
+
+          </div>
+
+
+        )
+
+
+        :
+
+
+        (
+
+          questions.map((item)=>(
+
+
+            <QuestionCard
+
+              key={item._id}
+
+              question={item}
+
+              onDelete={handleQuestionDeleted}
+
+            />
+
+
+          ))
+
+        )
+
+      }
+
+
     </div>
+
   );
+
 };
+
 
 export default Questions;
