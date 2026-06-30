@@ -8,53 +8,68 @@ const Questions = () => {
 
 
   // Charger les questions depuis le backend
-  useEffect(() => {
+ useEffect(() => {
 
-    const fetchQuestions = async () => {
+  const fetchQuestions = async () => {
 
-      try {
+    try {
 
-        const response = await fetch(
-          "http://localhost:3000/api/questions"
-        );
-
-
-        if (!response.ok) {
-          throw new Error("Erreur API");
-        }
+      const response = await fetch(
+        "http://localhost:3000/api/questions"
+      );
 
 
-        const data = await response.json();
+      const data = await response.json();
 
 
-        console.log("Questions reçues :", data);
+      console.log("Questions reçues :", data);
 
 
-        // Si backend renvoie directement un tableau
+
+      if(Array.isArray(data)){
+
         setQuestions(data);
 
+      }
+      else if(Array.isArray(data.questions)){
 
-      } catch (error) {
+        setQuestions(data.questions);
 
-        console.error(
-          "Erreur chargement questions :",
-          error
-        );
+      }
+      else if(Array.isArray(data.data)){
 
+        setQuestions(data.data);
 
-      } finally {
+      }
+      else{
 
-        setLoading(false);
+        setQuestions([]);
 
       }
 
-    };
 
 
-    fetchQuestions();
+    } catch(error){
+
+      console.error(
+        "Erreur chargement questions :",
+        error
+      );
 
 
-  }, []);
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  fetchQuestions();
+
+
+}, []);
 
 
 
