@@ -37,13 +37,26 @@ const Connexion = () => {
 
             const result = await response.json();
             console.log(result);
-
             if (response.ok) {
-                if (result.token) {
-                    localStorage.setItem("token", result.token);
-                }
-                alert(`Connexion réussie ${result.user.prenom} ${result.user.nom}` );
-                navigate('/');
+
+    if (result.token) {
+        localStorage.setItem("token", result.token);
+    }
+
+
+    if (result.user) {
+        localStorage.setItem(
+            "user",
+            JSON.stringify(result.user)
+        );
+    }
+
+
+    alert(`Connexion réussie ${result.user.prenom} ${result.user.nom}`);
+
+    navigate('/');
+
+           
                 
             } else {
                 alert(result.message || "Identifiants incorrects");
