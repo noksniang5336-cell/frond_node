@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Send, Tag, FileText, HelpCircle } from "lucide-react"
+const URL_FRONT = import.meta.env.VITE_URL_FRONT;
 
 const QuestionForm = () => {
+  const token = localStorage.getItem('token')
   const [question, setQuestion] = useState({
     titre: "",
     description: "",
@@ -38,11 +40,12 @@ const handleSubmit = async (e) => {
   try {
 
     const response = await fetch(
-      "http://localhost:3000/api/questions",
+       `${URL_FRONT}/api/questions`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+           "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(data)
       }

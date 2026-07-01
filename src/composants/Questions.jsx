@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import QuestionCard from "./QuestionCard";
+const URL_FRONT = import.meta.env.VITE_URL_FRONT;
 
 const Questions = () => {
 
@@ -15,16 +16,11 @@ const Questions = () => {
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/questions"
+      `${URL_FRONT}/api/questions`
       );
 
-
       const data = await response.json();
-
-
       console.log("Questions reçues :", data);
-
-
 
       if(Array.isArray(data)){
 
