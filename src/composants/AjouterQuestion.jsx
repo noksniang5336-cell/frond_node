@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+const URL_FRONT = import.meta.env.VITE_URL_FRONT;
 
 
 export default function AjouterQuestion(){
@@ -30,7 +31,7 @@ e.preventDefault();
 
 
 const response=await fetch(
-"http://localhost:3000/api/questions",
+`${URL_FRONT}/api/questions`,
 {
 method:"POST",
 headers:{
