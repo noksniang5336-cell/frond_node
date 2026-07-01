@@ -15,46 +15,58 @@ const QuestionForm = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const data = {
-      titre: question.titre,
-      description: question.description,
-      tags: question.tags
-        .split(",")
-        .map(tag => tag.trim())
-        .filter(tag => tag !== "")
-    };
 
-    console.log("Envoi :", data);
+  const user = JSON.parse(localStorage.getItem("user"));
 
-    try {
-      const response = await fetch(
-        "http://localhost:3000/api/questions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        }
-      );
+  const data = {
+    titre: question.titre,
+    description: question.description,
+    tags: question.tags
+      .split(",")
+      .map(tag => tag.trim())
+      .filter(tag => tag !== ""),
+    auteur: user._id
+  };
 
-      const result = await response.json();
-      console.log("Backend :", result);
 
-      // vider le formulaire
-      setQuestion({
-        titre: "",
-        description: "",
-        tags: ""
-      });
+  console.log("Envoi :", data);
 
-    } catch (error) {
-      console.log("Erreur :", error);
-    }
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:3000/api/questions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }
+    );
+
+
+    const result = await response.json();
+
+    console.log("Backend :", result);
+
+
+    setQuestion({
+      titre: "",
+      description: "",
+      tags: ""
+    });
+
+
+  } catch(error){
+
+    console.log("Erreur :", error);
+
   }
+}
 
   return (
     <div className="min-h-[92vh] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-50/40 via-slate-50 to-slate-100/70 flex items-center justify-center p-4 md:p-8 text-slate-800 antialiased">
