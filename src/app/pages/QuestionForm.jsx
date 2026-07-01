@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Send, Tag, FileText, HelpCircle } from "lucide-react"
+import { useNavigate } from 'react-router-dom';
 const URL_FRONT = import.meta.env.VITE_URL_FRONT;
 
 const QuestionForm = () => {
+  const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const [question, setQuestion] = useState({
     titre: "",
@@ -62,7 +64,8 @@ const handleSubmit = async (e) => {
       description: "",
       tags: ""
     });
-
+  alert('question créer')
+  navigate('/');
 
   } catch(error){
 
